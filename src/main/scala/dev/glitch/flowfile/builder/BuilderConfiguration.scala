@@ -1,10 +1,11 @@
-package dev.glitch.builder
+package dev.glitch.flowfile.builder
 
 import scala.collection.JavaConversions._
 import com.typesafe.config.{ConfigFactory, Config}
 
 /**
  * Parse config & return BuilderConfiguration
+ *   Uses TypeSafe's Config & ConfigFactory for this -> https://github.com/typesafehub/config
  */
 
 case class BuilderConfiguration (entries:Seq[BuilderEntry])
