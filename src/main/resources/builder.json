@@ -1,0 +1,24 @@
+{
+  "flowfile-entries" : [
+
+      { "attributes" :
+          {
+            "foo" : "bar",
+            "some" : "thing",
+            "uuid" : "000000-0000-00000000"
+          },
+        "payload-file" : "/home/kyle/giraffe.jpg"
+      },
+
+    { "attributes" :
+      {
+        "foo" : "baz",
+        "another" : "thing",
+        "myId" : "1"
+      },
+      "payload-file" : "/home/kyle/giraffe.jpg"
+    }
+
+  ]
+
+}
