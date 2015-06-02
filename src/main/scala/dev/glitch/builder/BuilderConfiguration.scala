@@ -15,7 +15,7 @@ object BuilderConfiguration {
   def apply(config: Config): BuilderConfiguration = {
     val entries = config.getConfigList("flowfile-entries")
     val builderEntries = entries.map { c: (Config) =>
-      val attrs = c.getConfig("attributes").entrySet().map(f => (f.getKey, f.getValue.toString)).toMap
+      val attrs = c.getConfig("attributes").entrySet().map(f => (f.getKey, f.getValue.render())).toMap
       val payload = c.getString("payload-file")
       BuilderEntry(attrs, payload)
     }
