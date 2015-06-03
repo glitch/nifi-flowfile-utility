@@ -21,7 +21,7 @@ object FlowFileBuilder {
           case Some(cmdLineConfig) =>
 
             // Validate cmd line args
-            validateCmdLineConfig(cmdLineConfig) // TODO flow control / reporting on bad config
+            // validateCmdLineConfig(cmdLineConfig) // TODO flow control / reporting on bad config
 
             val out = new FileOutputStream(cmdLineConfig.outputFile)
             val configName = if (cmdLineConfig.configFile.isEmpty) "builder" else cmdLineConfig.configFile
@@ -32,8 +32,9 @@ object FlowFileBuilder {
               println("attributes -> " + entry.attr)
               println("payload-file -> " + entry.payloadFile)
 
-              val payload = inputStreamToByteArray(new FileInputStream(entry.payloadFile))
+              val payload = inputStreamToByteArrayCommons(new FileInputStream(entry.payloadFile))
               writeToFlowFile(entry.attr, new ByteArrayInputStream(payload), out, payload.length)
+              out.close()
             }
 
           case None =>
@@ -50,6 +51,9 @@ object FlowFileBuilder {
 
   def inputStreamToByteArray(is: InputStream): Array[Byte] =
     Iterator continually is.read takeWhile (-1 !=) map (_.toByte) toArray
+
+  def inputStreamToByteArrayCommons(is:InputStream): Array[Byte] =
+    org.apache.commons.io.IOUtils.toByteArray(is)
 
   def validateCmdLineConfig(config: FlowFileBuilderCmdLineConfig): Boolean = {
     // TODO validate cmd line args
