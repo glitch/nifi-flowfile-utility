@@ -1,6 +1,8 @@
 package dev.glitch.flowfile.reader
 
-import java.io.{InputStream, FileInputStream, File}
+import java.io.{FileOutputStream, InputStream, FileInputStream, File}
+
+import dev.glitch.flowfile.reader.filter.{SimpleFilter, Filter}
 
 /**
  * Utility to extract attributes & payloads from a flow file
@@ -14,7 +16,7 @@ class ExtractFlowFile {
       head("scopt", "3.x")
       opt[File]("in") action { (x,config) => config.copy(inputFile = x)} text "flow file bundle to read"
       opt[File]("out") action { (x,config) => config.copy(outputDir = x)} text "Output directory to write .attr & .bytes files to"
-      opt[Boolean]("all") action { (x,config) => config.copy(all = x)} text "Flag to dump all records in flow file bundle"
+      opt[Boolean]("all") action { (x,config) => config.copy(all = true)} text "Flag to dump all records in flow file bundle"
       opt[String]("jexl") action { (x,config) => config.copy(jexlMatchCmd = x)} text "Advanced Match: JEXL query to match against"
       opt[String]("attrMatch") action { (x,config) => config.copy(simpleMatchAttr = x)} text "Simple Match: Attribute to match against"
       opt[String]("attrValue") action { (x,config) => config.copy(simpleMatchValues = x)} text "Simple Match: CSV list of values to hit on"
@@ -23,14 +25,28 @@ class ExtractFlowFile {
     parser.parse(args, ExtractCmdLineConfig()) match {
       case Some(cmdLineConfig) =>
 
-        // various cases here based on args
         val inputStream = new FileInputStream(cmdLineConfig.inputFile)
+        val filter = buildFilter(cmdLineConfig)
+        var counter = 0
+
         while (UnpackFlowFile.nextHeader(inputStream)) {
           val attrs = UnpackFlowFile.getAttributes(inputStream)
-          val payload = UnpackFlowFile.getPayload(inputStream)
 
-          println("Attributes: " + attrs)
-          println("Payload length: " + payload.length)
+          // Based on cmd line args, test the attrs & take appropriate action with the payload
+          if (cmdLineConfig.all || filter.matches(attrs)) {
+            println("Matched record: " + counter + "  Attributes: " + attrs)
+
+            // Output payload based on switch
+
+          }
+
+//          val payload = UnpackFlowFile.getPayload(inputStream)
+          val payload = UnpackFlowFile.skipPayload(inputStream)
+
+//          println("Attributes: " + attrs)
+//          println("Payload length: " + payload.length)
+
+          counter += 1
         }
 
         inputStream.close()
@@ -40,28 +56,28 @@ class ExtractFlowFile {
 
   }
 
-  def simpleMatch(inStream:InputStream, attrToMatch:String, valuesToMatch:Set[String] ): Unit = {
+  def simpleMatch(attributes:Map[String,String], attrToMatch:String, valuesToMatch:Set[String] ): Boolean = {
 
+    false
+  }
+
+  def advancedMatch(attributes:Map[String,String], jexlExpression:String): Boolean ={
+
+    false
+  }
+
+  def buildFilter(config:ExtractCmdLineConfig):Filter = {
+    if (config.simpleMatchValues.nonEmpty) {
+      SimpleFilter(config.simpleMatchAttr, csvToSet(config.simpleMatchValues))
+    } else if (config.jexlMatchCmd.nonEmpty) {
+      new {} with Filter {}
+    } else {
+      new {} with Filter {}
+    }
   }
 
   def csvToSet(input:String): Set[String] ={
     input.split(",").toSet
-  }
-
-  def getNextRecordFull(inputStream: InputStream) = {
-    if (UnpackFlowFile.nextHeader(inputStream)){
-      val attrs = UnpackFlowFile.getAttributes(inputStream)
-      val payload = UnpackFlowFile.getPayload(inputStream)
-      Option( (attrs, payload) )
-    } else {
-      None
-    }
-  }
-
-
-  def dumpAllAttrs(is:InputStream): Unit = {
-//    Iterator.continually( UnpackFlowFile.getAttributes(is) ).foreach( x => println(x))   This doesn't work
-
   }
 
 
