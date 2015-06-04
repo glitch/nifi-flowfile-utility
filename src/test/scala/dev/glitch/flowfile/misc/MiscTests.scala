@@ -32,7 +32,7 @@ class MiscTests {
     val foo = new ExtractFlowFile()
     foo.main(new Array[String](0))
 
-//    val bar = new ExtractFlowFile()
-//    bar.main(Array("--all","true"))
+    val bar = new ExtractFlowFile()
+    bar.main(Array("--all","true"))
   }
 }

@@ -2,7 +2,7 @@ package dev.glitch.flowfile.reader
 
 import java.io.{FileOutputStream, InputStream, FileInputStream, File}
 
-import dev.glitch.flowfile.reader.filter.{SimpleFilter, Filter}
+import dev.glitch.flowfile.reader.filter.{JexlFilter, SimpleFilter, Filter}
 
 /**
  * Utility to extract attributes & payloads from a flow file
@@ -43,9 +43,6 @@ class ExtractFlowFile {
 //          val payload = UnpackFlowFile.getPayload(inputStream)
           val payload = UnpackFlowFile.skipPayload(inputStream)
 
-//          println("Attributes: " + attrs)
-//          println("Payload length: " + payload.length)
-
           counter += 1
         }
 
@@ -56,21 +53,11 @@ class ExtractFlowFile {
 
   }
 
-  def simpleMatch(attributes:Map[String,String], attrToMatch:String, valuesToMatch:Set[String] ): Boolean = {
-
-    false
-  }
-
-  def advancedMatch(attributes:Map[String,String], jexlExpression:String): Boolean ={
-
-    false
-  }
-
   def buildFilter(config:ExtractCmdLineConfig):Filter = {
     if (config.simpleMatchValues.nonEmpty) {
       SimpleFilter(config.simpleMatchAttr, csvToSet(config.simpleMatchValues))
     } else if (config.jexlMatchCmd.nonEmpty) {
-      new {} with Filter {}
+      new JexlFilter(config.jexlMatchCmd)
     } else {
       new {} with Filter {}
     }
