@@ -20,11 +20,13 @@ object FlowFileBuilder {
         parser.parse(args, FlowFileBuilderCmdLineConfig()) match {
           case Some(cmdLineConfig) =>
 
+            // TODO: Extract into methods for better testing & modularity
+
             // Validate cmd line args
             // validateCmdLineConfig(cmdLineConfig) // TODO flow control / reporting on bad config
 
             val out = new FileOutputStream(cmdLineConfig.outputFile)
-            val configName = if (cmdLineConfig.configFile.isEmpty) "builder" else cmdLineConfig.configFile
+            val configName = if (cmdLineConfig.configFile.isEmpty) "reference" else cmdLineConfig.configFile
             BuilderConfiguration( configName ).entries.foreach{ entry =>
 
               // TODO Change these to loggers
@@ -34,8 +36,8 @@ object FlowFileBuilder {
 
               val payload = inputStreamToByteArrayCommons(new FileInputStream(entry.payloadFile))
               writeToFlowFile(entry.attr, new ByteArrayInputStream(payload), out, payload.length)
-              out.close()
             }
+            out.close()
 
           case None =>
           // arguments are bad, error message will have been displayed
@@ -62,4 +64,4 @@ object FlowFileBuilder {
 
 }
 
-case class FlowFileBuilderCmdLineConfig(configFile:String="", outputFile: File = new File("test.flowfile.out"))
+case class FlowFileBuilderCmdLineConfig(configFile:String="", outputFile: File = new File("test.flowfile.pkg"))

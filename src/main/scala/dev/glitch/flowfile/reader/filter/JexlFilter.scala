@@ -12,7 +12,7 @@ class JexlFilter(val expressionString:String) extends Filter {
 
   override def matches(attributes:Map[String,String]): Boolean = {
     val context = new MapContext()
-    for ( (k,v) <- attributes ) context.set(k.toLowerCase,v.toLowerCase)
+    for ( (k,v) <- attributes ) context.set(k.toLowerCase,v.toLowerCase.replaceAll("^\"|\"$", ""))  //nifi read attrs quotes everything
     Boolean.unbox(expression.evaluate(context))
   }
 

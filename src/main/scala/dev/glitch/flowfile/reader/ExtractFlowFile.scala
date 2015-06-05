@@ -25,6 +25,7 @@ class ExtractFlowFile {
     parser.parse(args, ExtractCmdLineConfig()) match {
       case Some(cmdLineConfig) =>
 
+        // TODO : Extract into methods for better modularity & testing
         val inputStream = new FileInputStream(cmdLineConfig.inputFile)
         val filter = buildFilter(cmdLineConfig)
         var counter = 0
@@ -71,7 +72,7 @@ class ExtractFlowFile {
 }
 
 case class ExtractCmdLineConfig(
-                               inputFile:File=new File("test.flowfile.out"),
+                               inputFile:File=new File("test.flowfile.pkg"),
                                outputDir:File=new File("."),
                                all:Boolean=false,
                                jexlMatchCmd:String="",

@@ -7,7 +7,7 @@
             "some" : "thing",
             "uuid" : "000000-0000-00000000"
           },
-        "payload-file" : "/home/kyle/giraffe.jpg"
+        "payload-file" : "nifi.png"
       },
 
     { "attributes" :
@@ -16,7 +16,7 @@
         "another" : "thing",
         "myId" : "1"
       },
-      "payload-file" : "/home/kyle/giraffe.jpg"
+      "payload-file" : "nifi.png"
     }
 
   ]
