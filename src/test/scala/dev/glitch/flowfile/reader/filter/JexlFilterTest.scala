@@ -5,6 +5,7 @@ import org.junit.{Assert, Test}
 /**
  *
  */
+@Test
 class JexlFilterTest {
 
   @Test

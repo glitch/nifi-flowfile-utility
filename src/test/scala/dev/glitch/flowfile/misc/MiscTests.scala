@@ -1,38 +1,19 @@
 package dev.glitch.flowfile.misc
 
-import java.io.FileInputStream
 
 import dev.glitch.flowfile.builder.FlowFileBuilder
 import dev.glitch.flowfile.reader.ExtractFlowFile
 import org.apache.commons.jexl2.{MapContext, Expression, JexlEngine}
 import org.junit._
-import Assert._
 
 /**
  * Miscellaneous tests
  */
 class MiscTests {
 
-  @Test
-  def testInputStreamReading(): Unit = {
-    val path = "/home/kyle/giraffe.jpg"
-
-    val iStream = new FileInputStream(path)
-
-    var i = 0
-    while (iStream.read() != -1) {
-      i+=1
-    }
-    iStream.close()
-
-    var j = 0
-    val jStream = new FileInputStream(path)
-  }
-
-  @Test
+  @Ignore
   def testFlowFileCreation(): Unit = {
     FlowFileBuilder.main(Array[String]("--config", "reference.json"))
-
   }
 
   @Test
