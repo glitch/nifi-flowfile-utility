@@ -15,5 +15,10 @@ class JexlFilter(val expressionString:String) extends Filter {
     for ( (k,v) <- attributes ) context.set(k.toLowerCase,v.toLowerCase.replaceAll("^\"|\"$", ""))  //nifi read attrs quotes everything
     Boolean.unbox(expression.evaluate(context))
   }
+}
 
+object JexlFilter extends Filter {
+  def apply(expr:String): JexlFilter = {
+    new JexlFilter(expr)
+  }
 }

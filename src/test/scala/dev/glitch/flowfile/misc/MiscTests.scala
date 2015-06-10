@@ -47,4 +47,16 @@ class MiscTests {
     Assert.assertTrue(Boolean.unbox(result))
 
   }
+
+  /**
+   * Use this to test writing out the .attrs & .payload files based on matches.
+   */
+  @Ignore
+//  @Test
+  def testJexlMatchAndWrite(): Unit = {
+    val url = getClass.getResource("/test.flowfile.pkg")
+    val bar = new ExtractFlowFile()
+    val expression = "foo==\"baz\" && myId == '1'"
+    bar.main(Array("--in", url.getPath, "--jexl", expression, "--out", "."))
+  }
 }

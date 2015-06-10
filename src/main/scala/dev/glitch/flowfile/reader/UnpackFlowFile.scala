@@ -41,6 +41,7 @@ object UnpackFlowFile extends FlowFileUnpackagerV3 {
 
   def writePayload(inputStream: InputStream, outputStream: OutputStream): Unit ={
     super.copy(inputStream, outputStream, super.readLong(inputStream))
+    outputStream.close()
   }
 
   def skipPayload(inputStream: InputStream): Unit ={
