@@ -40,3 +40,4 @@ build.log
 #
 build.log
 test.flowfile.out
+test.flowfile.pkg

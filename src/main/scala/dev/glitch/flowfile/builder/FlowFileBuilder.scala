@@ -12,8 +12,9 @@ object FlowFileBuilder {
     def main(args : Array[String]) {
 
         val parser = new scopt.OptionParser[FlowFileBuilderCmdLineConfig]("scopt") {
-          head("scopt", "3.x")
-          opt[String]("config") action { (x,config) => config.copy(configFile = x)} text "Config file containg FlowFile entry descriptions"
+          head("scopt", "4.x")
+          help("help").text("See the options below & reference.json file in jar for example")
+          opt[String]("config") action { (x,config) => config.copy(configFile = x)} text "Required: Config file containing FlowFile entry descriptions"
           opt[File]("out") action { (x,config) => config.copy(outputFile = x)} text "Output file to write to"
         }
 

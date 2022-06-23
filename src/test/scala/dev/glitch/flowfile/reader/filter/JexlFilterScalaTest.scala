@@ -1,15 +1,16 @@
 package dev.glitch.flowfile.reader.filter
 
 import org.junit.runner.RunWith
-import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.funsuite._
+import org.scalatest.matchers._
+
+//import org.scalatest.junit.JUnitRunner
 
 /**
  * Unit tests for JexlFilter using ScalaTest
  */
-@RunWith(classOf[JUnitRunner])
-class JexlFilterScalaTest extends FunSuite with ShouldMatchers {
+//@RunWith(classOf[JUnitRunner])
+class JexlFilterScalaTest extends AsyncFunSuite with should.Matchers {
 
   test("Filter should match on these attributes"){
     val filter = new JexlFilter("FOO == 'bar' and Color == 'Red'")
